@@ -4,11 +4,13 @@ class DashboardConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.groupname = 'dashboard'
+        print("Connected")
         await self.channel_layer.group_add(self.groupname,self.channel_name)
         await self.accept()
     
     async def disconnect(self,close_code):
-        pass
+        print("Disconnected")
+        await self.channel_layer.group_discard(self.groupname,self.channel_name)
     
     async def receive(self,text_data):
         print("Got: ",text_data)
