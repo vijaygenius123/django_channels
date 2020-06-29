@@ -31,12 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -67,8 +69,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'main.wsgi.application'
-
+#WSGI_APPLICATION = 'main.wsgi.application'
+ASGI_APPLICATION = "main.routing.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -122,3 +124,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
