@@ -3,11 +3,12 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 class DashboardConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        await self.connect()
+        self.groupname = 'dashboard'
+        await self.channel_layer.group_add(self.groupname,self.channel_name)
+        await self.accept()
     
     async def disconnect(self,close):
-        await self.disconnect()
+        pass
     
     async def recieve(self,data):
-        print(data)
         pass
