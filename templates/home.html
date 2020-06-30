@@ -12,6 +12,16 @@
 {% block js%}
 <script>
     var ctx = document.getElementById('myChart').getContext('2d');
+
+
+    let socket = new WebSocket("ws://localhost:8000/ws/");
+
+
+    socket.onopen = function (e) {
+        console.log("Connection established")
+    }
+
+
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
