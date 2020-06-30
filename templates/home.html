@@ -21,6 +21,14 @@
         console.log("Connection established")
     }
 
+    socket.onclose = function (e) {
+        console.log("Connection closed")
+    }
+
+    socket.onmessage = function (e) {
+        console.log(e.data)
+    }
+
 
     var myChart = new Chart(ctx, {
         type: 'line',
