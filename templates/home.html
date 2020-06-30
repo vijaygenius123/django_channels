@@ -1,0 +1,60 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Dashboard</h1>
+    <div style="max-width: 900px;max-height: 400px;">
+        <canvas id="myChart" width="900" height="400"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block js%}
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: '# of Votes',
+                data: []
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    let socket = new WebSocket("ws://localhost:8000/ws/");
+
+
+    socket.onopen = function (e) {
+        console.log("Connection established")
+    }
+
+    socket.onclose = function (e) {
+        console.log("Connection closed")
+    }
+
+    socket.onmessage = function (e) {
+        console.log(e.data)
+        myChart.data.labels.push(new Date());
+        myChart.data.datasets.forEach((dataset) => {
+            dataset.data.push(parseInt(e.data));
+        });
+        myChart.update();
+    }
+
+
+
+
+</script>
+{% endblock %}
