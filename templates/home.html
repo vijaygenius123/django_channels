@@ -13,6 +13,25 @@
 <script>
     var ctx = document.getElementById('myChart').getContext('2d');
 
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: '# of Votes',
+                data: []
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 
     let socket = new WebSocket("ws://localhost:8000/ws/");
 
@@ -27,27 +46,15 @@
 
     socket.onmessage = function (e) {
         console.log(e.data)
+        myChart.data.labels.push(new Date());
+        myChart.data.datasets.forEach((dataset) => {
+            dataset.data.push(parseInt(e.data));
+        });
+        myChart.update();
     }
 
 
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [1, 2, 3, 4, 5, 6],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3]
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
+
+
 </script>
 {% endblock %}
